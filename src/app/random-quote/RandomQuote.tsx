@@ -22,27 +22,27 @@ const RandomQuote = () => {
   });
   const { quoteText, quoteAuthor, quoteGenre } = quote;
 
-  useEffect(() => {
+  const getQuote = async () => {
     setIsLoading(true);
-    async function getQuote() {
-      const response = await axios.get(
-        process.env.REACT_APP_BASE_API_QUOTE_GARDEN ||
-          "https://quote-garden.herokuapp.com/api/v3/quotes"
-      );
+    const response = await axios.get(
+      process.env.REACT_APP_BASE_API_QUOTE_GARDEN ||
+        "https://quote-garden.herokuapp.com/api/v3/quotes"
+    );
 
-      const responseData = response.data;
-      const quoteData = getRandomValue(responseData.data);
-      delete quoteData["__v"];
+    const responseData = response.data;
+    const quoteData = getRandomValue(responseData.data);
+    delete quoteData["__v"];
 
-      setQuote(quoteData);
-      setIsLoading(false);
-    }
+    setQuote(quoteData);
+    setIsLoading(false);
+  };
 
+  useEffect(() => {
     getQuote();
   }, []);
 
   return (
-    <MainLayout>
+    <MainLayout randomQuote={getQuote}>
       <Loading isOpen={isLoading} />
       <div className={styles.content}>
         <QuoteBlock quote={quoteText} />

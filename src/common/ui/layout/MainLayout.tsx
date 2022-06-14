@@ -6,6 +6,7 @@ import styles from "./MainLayout.module.scss";
 
 interface Props {
   children: ReactNode;
+  randomQuote?: () => void;
 }
 
 const MainLayout: FC<Props> = (props: Props) => {
@@ -13,7 +14,7 @@ const MainLayout: FC<Props> = (props: Props) => {
     <Container>
       <div className={styles.layout}>
         <header className={styles.header}>
-          <div className={styles.randomBtn}>
+          <div className={styles.randomBtn} onClick={props.randomQuote}>
             random <Random />
           </div>
         </header>
