@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "../../common/ui/components/loading";
 import { Quote } from "../../common/ui/components/model";
@@ -14,12 +14,11 @@ const AuthorQuote = () => {
   const [quotes, setQuotes] = useState<Array<Quote>>([INIT_DATA]);
   const { author } = useParams();
 
-  const getAllQuotes = () => {
+  const getAllQuotes = useCallback(() => {
     setIsLoading(true);
     doGetQuotes({ author })
       .then((data) => {
         const responseData = data.data;
-        console.log(responseData);
         setQuotes(responseData.data);
         setIsLoading(false);
       })
@@ -27,11 +26,11 @@ const AuthorQuote = () => {
         setIsLoading(false);
         throw new Error(error);
       });
-  };
+  }, [author]);
 
   useEffect(() => {
     getAllQuotes();
-  }, []);
+  }, [getAllQuotes]);
 
   return (
     <MainLayout>
