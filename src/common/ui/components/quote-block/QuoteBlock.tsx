@@ -8,7 +8,7 @@ interface Props {
 }
 
 const QuoteBlock: FC<Props> = (props: Props) => {
-  const { quote = "No quote" } = props;
+  const { quote = "no quote" } = props;
 
   return (
     <section className={styles.block}>

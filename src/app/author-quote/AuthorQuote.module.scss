@@ -1,0 +1,14 @@
+@use "../../common/ui/assets/colors";
+
+.content {
+  padding: 0 250px;
+
+  .author {
+    margin-bottom: 80px;
+
+    h1 {
+      font-size: 36px;
+      color: colors.$black-3;
+    }
+  }
+}
