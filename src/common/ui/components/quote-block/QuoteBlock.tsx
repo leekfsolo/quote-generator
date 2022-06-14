@@ -1,7 +1,21 @@
-import React from "react";
+import React, { FC, ReactNode } from "react";
 
-const QuoteBlock = () => {
-  return <div>QuoteBlock</div>;
+import styles from "./QuoteBlock.module.scss";
+
+interface Props {
+  children?: ReactNode;
+  quote: string;
+}
+
+const QuoteBlock: FC<Props> = (props: Props) => {
+  const { quote = "No quote" } = props;
+
+  return (
+    <section className={styles.block}>
+      <div className={styles.bar}></div>
+      <q>{quote}</q>
+    </section>
+  );
 };
 
 export default QuoteBlock;

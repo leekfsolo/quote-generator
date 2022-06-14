@@ -1,0 +1,49 @@
+@use "../../common/ui/assets/colors";
+
+.content {
+  padding: 100px 250px;
+
+  .author {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 50px 30px;
+    margin-left: -30px;
+    transition: 0.1s;
+    cursor: pointer;
+
+    .author-info {
+      h4 {
+        margin: 0 0 8px 0;
+        font-size: 24px;
+        font-family: 700;
+        color: colors.$black;
+      }
+
+      p {
+        margin: 0;
+        font-size: 14px;
+        font-family: 500;
+        color: colors.$gray;
+      }
+    }
+
+    svg {
+      opacity: 0;
+      fill: colors.$white;
+      transition: 0.1s;
+    }
+
+    &:hover {
+      background-color: colors.$black-3;
+
+      h4 {
+        color: colors.$white;
+      }
+
+      svg {
+        opacity: 1;
+      }
+    }
+  }
+}

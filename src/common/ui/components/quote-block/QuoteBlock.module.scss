@@ -1,0 +1,21 @@
+@use "../../assets/colors";
+
+.block {
+  position: relative;
+  margin-bottom: 100px;
+
+  .bar {
+    height: 100%;
+    width: 8px;
+    background-color: colors.$quote-bar;
+    position: absolute;
+    top: 0;
+    left: -100px;
+  }
+
+  q {
+    font-size: 36px;
+    font-weight: 500;
+    color: black;
+  }
+}
