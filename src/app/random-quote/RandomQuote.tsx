@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 
 import QuoteBlock from "../../common/ui/components/quote-block";
 import MainLayout from "../../common/ui/layout/MainLayout";
@@ -10,31 +9,28 @@ import { Link } from "react-router-dom";
 import { getRandomValue } from "../../common/utils/getRandomValue";
 import { Quote } from "../../common/ui/components/model";
 import Loading from "../../common/ui/components/loading";
+import { doGetQuotes } from "../api";
+import { INIT_DATA } from "../constants";
 
 const RandomQuote = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [quote, setQuote] = useState<Quote>({
-    _id: "1",
-    quoteText:
-      "The first rule of any technology used in a business is that automation applied to an efficient operation will magnify the efficiency. The second is that automation applied to an inefficient operation will magnify the inefficiency.",
-    quoteAuthor: "Bill Gates",
-    quoteGenre: "business",
-  });
+  const [quote, setQuote] = useState<Quote>(INIT_DATA);
   const { quoteText, quoteAuthor, quoteGenre } = quote;
 
-  const getQuote = async () => {
+  const getQuote = () => {
     setIsLoading(true);
-    const response = await axios.get(
-      process.env.REACT_APP_BASE_API_QUOTE_GARDEN ||
-        "https://quote-garden.herokuapp.com/api/v3/quotes"
-    );
+    doGetQuotes()
+      .then((data) => {
+        const responseData = data.data;
+        const quoteData = getRandomValue(responseData.data);
 
-    const responseData = response.data;
-    const quoteData = getRandomValue(responseData.data);
-    delete quoteData["__v"];
-
-    setQuote(quoteData);
-    setIsLoading(false);
+        setQuote(quoteData);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        throw new Error(error);
+      });
   };
 
   useEffect(() => {
@@ -47,7 +43,7 @@ const RandomQuote = () => {
       <div className={styles.content}>
         <QuoteBlock quote={quoteText} />
 
-        <Link className={styles.author} to="/asdf">
+        <Link className={styles.author} to={`/${quoteAuthor}`}>
           <div className={styles["author-info"]}>
             <h4>{quoteAuthor}</h4>
             <p>{quoteGenre}</p>

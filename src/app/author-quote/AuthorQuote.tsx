@@ -1,25 +1,49 @@
-import React, { FC } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import Loading from "../../common/ui/components/loading";
+import { Quote } from "../../common/ui/components/model";
 import QuoteBlock from "../../common/ui/components/quote-block";
 
 import MainLayout from "../../common/ui/layout/MainLayout";
+import { doGetQuotes } from "../api";
+import { INIT_DATA } from "../constants";
 import styles from "./AuthorQuote.module.scss";
-interface Props {
-  id?: string;
-}
 
-const AuthorQuote: FC<Props> = (props: Props) => {
+const AuthorQuote = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [quotes, setQuotes] = useState<Array<Quote>>([INIT_DATA]);
+  const { author } = useParams();
+
+  const getAllQuotes = () => {
+    setIsLoading(true);
+    doGetQuotes({ author })
+      .then((data) => {
+        const responseData = data.data;
+        console.log(responseData);
+        setQuotes(responseData.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        throw new Error(error);
+      });
+  };
+
+  useEffect(() => {
+    getAllQuotes();
+  }, []);
+
   return (
     <MainLayout>
+      <Loading isOpen={isLoading} />
       <div className={styles.content}>
         <div className={styles.author}>
-          <h1>Bill Gates</h1>
+          <h1>{author}</h1>
         </div>
 
-        <QuoteBlock quote="The first rule of any technology used in a business is that automation applied to an efficient operation will magnify the efficiency. The second is that automation applied to an inefficient operation will magnify the inefficiency." />
-
-        <QuoteBlock quote="We always overestimate the change that will occur in the next two years and underestimate the change that will occur in the next ten. Don't let yourself be lulled into inaction." />
-
-        <QuoteBlock quote="Climate change is a terrible problem, and it absolutely needs to be solved. It deserves to be a huge priority." />
+        {quotes.map((quote) => (
+          <QuoteBlock quote={quote.quoteText} key={quote._id} />
+        ))}
       </div>
     </MainLayout>
   );

@@ -9,7 +9,7 @@ const Routers = () => {
     <Router>
       <Routes>
         <Route path="/" element={<RandomQuote />} />
-        <Route path="/:id" element={<AuthorQuote />} />
+        <Route path="/:author" element={<AuthorQuote />} />
       </Routes>
     </Router>
   );

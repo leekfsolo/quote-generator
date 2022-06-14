@@ -3,6 +3,7 @@ import Container from "../components/container";
 
 import { ReactComponent as Random } from "../assets/images/random.svg";
 import styles from "./MainLayout.module.scss";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   children: ReactNode;
@@ -10,11 +11,19 @@ interface Props {
 }
 
 const MainLayout: FC<Props> = (props: Props) => {
+  const { randomQuote } = props;
+  const navigate = useNavigate();
+
+  const backToRandomQuotePage = () => {
+    if (randomQuote) randomQuote();
+    navigate("/", { replace: true });
+  };
+
   return (
     <Container>
       <div className={styles.layout}>
         <header className={styles.header}>
-          <div className={styles.randomBtn} onClick={props.randomQuote}>
+          <div className={styles.randomBtn} onClick={backToRandomQuotePage}>
             random <Random />
           </div>
         </header>
